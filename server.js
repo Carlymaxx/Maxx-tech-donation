@@ -10,6 +10,9 @@ app.use(express.json());
 const consumerKey = process.env.PESAPAL_CONSUMER_KEY;
 const consumerSecret = process.env.PESAPAL_CONSUMER_SECRET;
 
+// Live Pesapal API URL
+const PESAPAL_API_URL = "https://www.pesapal.com/API/iframepayment";
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
@@ -23,7 +26,7 @@ app.post("/donate", async (req, res) => {
     const timestamp = new Date().toISOString();
     const nonce = crypto.randomBytes(16).toString("hex");
 
-    // Generate HMAC signature for Pesapal
+    // Generate HMAC SHA256 signature
     const signature = crypto.createHmac("sha256", consumerSecret)
                             .update(`${consumerKey}${nonce}${timestamp}`)
                             .digest("base64");
@@ -38,12 +41,13 @@ app.post("/donate", async (req, res) => {
       last_name: "",
       email: "donor@example.com",
       phone_number: phone,
-      callback_url: `https://${process.env.RENDER_EXTERNAL_URL}/callback`
+      callback_url: `https://${process.env.RENDER_EXTERNAL_URL}/callback`,
+      // Important: Make sure your Pesapal account is linked to Paybill 714888
+      paybill_number: "714888"
     };
 
-    // Send request to Pesapal
     const response = await axios.post(
-      "https://demo.pesapal.com/API/iframepayment", // Use demo URL first
+      PESAPAL_API_URL,
       requestBody,
       {
         headers: {
@@ -53,12 +57,12 @@ app.post("/donate", async (req, res) => {
       }
     );
 
-    // Redirect donor to Pesapal checkout
+    // Redirect donor to Pesapal checkout (STK Push will appear here)
     res.redirect(response.data.checkout_url);
 
   } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).send("Error initiating Pesapal payment");
+    console.error("Pesapal Error:", err.response?.data || err.message);
+    res.status(500).send("Error initiating Pesapal payment: " + (err.response?.data?.message || err.message));
   }
 });
 
