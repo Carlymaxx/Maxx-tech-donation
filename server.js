@@ -74,3 +74,5 @@ app.post("/callback", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Maxx Tech donation portal running on port ${PORT}`));
+
+// Redeploy to renew SSL certificate
