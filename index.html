@@ -1,18 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Support Maxx Tech</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxx Tech Donation Portal</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Watermark */
+  body::before {
+    content: "MAXX";
+    position: absolute;
+    font-size: 15rem;
+    font-weight: bold;
+    color: rgba(255,255,255,0.05);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Big title */
+  h1 {
+    font-size: 4rem;
+    margin-bottom: 50px;
+    z-index: 1;
+    text-align: center;
+    position: relative;
+  }
+
+  /* Floating buttons container */
+  .buttons {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Floating buttons style */
+  .btn {
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 400%;
+    color: #fff;
+    animation: rainbow 5s linear infinite;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    position: absolute;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Hover effect */
+  .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+
+  @keyframes rainbow {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+
+  /* Floating Maxx Tech Logo */
+  .logo {
+    position: absolute;
+    font-size: 6rem;
+    font-weight: bold;
+    color: rgba(255,255,255,0.1);
+    pointer-events: none;
+    animation: floatLogo 20s linear infinite;
+  }
+
+  @keyframes floatLogo {
+    0% {transform: translate(-50%, -50%) translateX(0px);}
+    50% {transform: translate(-50%, -50%) translateX(200px);}
+    100% {transform: translate(-50%, -50%) translateX(0px);}
+  }
+
+</style>
 </head>
 <body>
-  <h2>Donate to Maxx Tech</h2>
-  <form action="/donate" method="POST">
-      <label>M-Pesa Number:</label><br>
-      <input type="text" name="phone" placeholder="2547XXXXXXXX" required><br><br>
 
-      <label>Amount (KES):</label><br>
-      <input type="number" name="amount" required><br><br>
+<h1>Maxx Tech</h1>
 
-      <button type="submit">Donate</button>
-  </form>
+<!-- Floating Maxx Tech logo -->
+<div class="logo" style="top:20%; left:10%;">MAXX</div>
+<div class="logo" style="top:70%; left:80%;">MAXX</div>
+<div class="logo" style="top:40%; left:50%;">MAXX</div>
+
+<div class="buttons">
+  <button class="btn" onclick="window.location.href='#'">Donate via M-Pesa</button>
+  <button class="btn" onclick="window.location.href='#'">Support Maxx Tech</button>
+  <button class="btn" onclick="window.location.href='#'">More Info</button>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.btn');
+
+  // Randomly float buttons
+  buttons.forEach(btn => {
+    // Initial random position
+    btn.style.top = Math.random() * 70 + 15 + 'vh';
+    btn.style.left = Math.random() * 70 + 15 + 'vw';
+
+    // Animate floating
+    setInterval(() => {
+      const top = Math.random() * 70 + 15;
+      const left = Math.random() * 70 + 15;
+      btn.style.transition = 'all 3s ease-in-out';
+      btn.style.top = top + 'vh';
+      btn.style.left = left + 'vw';
+    }, 3000 + Math.random()*2000);
+  });
+</script>
+
 </body>
 </html>
